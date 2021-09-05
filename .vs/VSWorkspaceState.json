@@ -1,9 +1,11 @@
 {
   "ExpandedNodes": [
     "",
+    "\\git!",
+    "\\git!\\git!",
     "\\git_test",
     "\\git_test\\git_test"
   ],
-  "SelectedNode": "\\git_test\\git_test\\test.c",
+  "SelectedNode": "\\git!\\git!\\소스.c",
   "PreviewInSolutionExplorer": false
 }
