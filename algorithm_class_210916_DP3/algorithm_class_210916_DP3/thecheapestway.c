@@ -12,7 +12,7 @@ int main()
 	int min = 0;
 	int minN = 0;
 	FILE* fp;
-	fp = fopen("test1.txt", "r");
+	fp = fopen("test.txt", "r");
 	if (fp == NULL)
 	{
 		printf("error");
@@ -142,12 +142,14 @@ int main()
 				}
 
 			}
+
 			min = dp[0];
 			for (int i = 1; i < cul; i++)
 			{
 				if (min > dp[i])
 				{
 					minN = i;
+					min = dp[i];
 				}
 			}
 			for (int i = 0; i < row; i++)
@@ -157,7 +159,6 @@ int main()
 			printf("\n%d\n", dp[minN]);
 
 			free(dp);
-			
 			free(pdp);
 			
 		}
