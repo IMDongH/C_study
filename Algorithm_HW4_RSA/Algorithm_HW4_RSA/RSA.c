@@ -1,8 +1,9 @@
 #include<stdio.h>
 int GCD(int num1, int num2);
 int extended_Euclid(int num1, int num2, int gcd);
-int is_prime(int);
-int mod_Exp(int, int, int);
+int is_prime(int n);
+int mod_Exp(int a, int b, int n);
+
 void main()
 {
 	int p, q;
@@ -38,7 +39,7 @@ void main()
 
 	int dd;
 	int i = 1;
-	while (1)
+	while (1)//find private key d
 	{
 		dd = (i * N) + 1;
 		if (dd % e == 0)
@@ -58,13 +59,10 @@ void main()
 
 
 }
-int mod_Exp(int a, int b, int n)
+int mod_Exp(int a, int b, int n)//calculate (a^b)mod n
 {
 	int c = 0, d = 1;
-
-
-
-	int bit[100000];
+	int bit[100000];  //store binary number
 	int count = 0;
 
 	while (b > 0)	//calculate b's binary number
@@ -87,7 +85,7 @@ int mod_Exp(int a, int b, int n)
 
 	return d;
 }
-int is_prime(int n)
+int is_prime(int n)//check prime number
 {
 	for (int i = 2; i < n; i++)
 	{
@@ -96,7 +94,7 @@ int is_prime(int n)
 		else return 1;
 	}
 }
-int GCD(int num1, int num2)
+int GCD(int num1, int num2)//calculate GCD
 {
 	if (num2 == 0)
 	{
