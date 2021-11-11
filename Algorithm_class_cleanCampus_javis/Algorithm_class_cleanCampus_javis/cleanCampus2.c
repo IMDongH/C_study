@@ -2,11 +2,12 @@
 #include <math.h>
 #include<stdlib.h>
 #define PI 3.141592654
-double angle(point);
+
+double angle(struct points);
 void sortA(struct points*, int);
 int ccw(point, point, point);
 double circumF(struct points*, int);
-double circum(point, point);
+double circum(point, point);	
 
 typedef struct points {
 	double x;
@@ -18,9 +19,11 @@ void main()
 	int caseN = 0;
 	int pointN = 0;
 	point* input;
+	point* sort;
 	point zero;
 	zero.x = 0;
 	zero.y = 0;
+	zero.angle = 0;
 	point* stk;
 	printf("Type case number : ");
 	scanf("%d", &caseN);
@@ -28,44 +31,56 @@ void main()
 	scanf("%d", &pointN);
 	stk = malloc(sizeof(point) * (pointN + 1));
 	input = malloc(sizeof(point) * pointN);
-
+	sort = malloc(sizeof(point) * pointN);
 	while (caseN > 0)
 	{
 		for (int i = 0; i < pointN; i++)
 		{
 			scanf("%lf %lf", &input[i].x, &input[i].y);
-			input[i].angle = angle(input[i]);
+			input[i].angle = angle(input[i], zero.angle);
 		}
 		sortA(input, pointN);
-		for (int i = 0; i < pointN; i++)
-		{
-			printf("pointnumber %d %lf %lf : %lf\n", i, input[i].x, input[i].y, input[i].angle);
-		}
+		sort = input;
 		stk[0] = zero;
 		stk[1] = input[0];
 		int count = 2;
-		for (int i = 1; i < pointN; i++)
+		point max = input[pointN - 1];
+		point min = input[0];
+
+		while (1)
 		{
-			while (count >= 2 && (ccw(stk[count - 2], stk[count - 1], input[i]) <= 0))
+			for (int i = 0; i < pointN; i++)
 			{
-				stk[count].x = 0;
-				stk[count].y = 0;
-				stk[count].angle = 0;
-				count--;
+				input[i].angle = angle(input[i], min.angle);
 			}
-			stk[count] = input[i];
-			count++;
+			sortA(input, pointN);
+			min = input[0];
+
+
+			if (min.x == max.x && min.y == max.y) {
+
+				stk[count] = min;
+				count++;
+				break;
+			}
+			else
+			{
+				stk[count] = min;
+				count++;
+
+			}
 		}
-		printf("\n%d\n", count);
-		for (int i = 0; i < count; i++)
-		{
-			printf("%lf %lf\n", stk[i].x, stk[i].y);
+
+			for (int i = 0; i < count; i++)
+			{
+				printf("%lf %lf\n", stk[i].x, stk[i].y);
+			}
+			printf("\n");
+			double circum = circumF(stk, count);
+			printf("%.2lf", circum);
+			caseN--;
 		}
-		printf("\n");
-		double circum = circumF(stk, count);
-		printf("%.2lf", circum);
-		caseN--;
-	}
+
 }
 double circumF(struct points* input, int count)
 {
@@ -82,13 +97,14 @@ double circumF(struct points* input, int count)
 	}
 	return num + 2;
 }
-double circum(point input1, point input2)
+double circum(point p1, point p2)
 {
-	return (sqrt(pow((input1.x - input2.x), 2) + pow((input1.y - input2.y), 2)));
+	double result = (double)sqrt(pow((double)p2.x - (double)p1.x, 2) + pow((double)p2.y - (double)p1.y, 2));
+	return result;
 }
-double angle(point a)
+double angle(point a, double angle)
 {
-	double degree = (atan2(a.y, a.x) * 180 / PI);
+	double degree = (atan2(a.y, a.x) * 180 / PI) - angle;
 
 	if (degree < 0)
 	{
@@ -116,10 +132,25 @@ void sortA(struct points* input, int count)
 		{
 			if (input[j].angle > input[j + 1].angle)
 			{
-				temp = input[j];
-				input[j] = input[j + 1];
-				input[j + 1] = temp;
+				
+					temp = input[j];
+					input[j] = input[j + 1];
+					input[j + 1] = temp;
+							
 			}
+			else
+			{
+				if (input[j].angle == input[j + 1].angle)
+				{
+					if (input[j].x < (input[j + 1].x) || (input[j].y) < (input[j + 1].y))
+					{
+						temp = input[j];
+						input[j] = input[j + 1];
+						input[j + 1] = temp;
+					}
+				}
+			}
+			
 		}
 	}
 }
